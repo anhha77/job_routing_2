@@ -6,9 +6,12 @@ import HomePage from "./pages/HomePage";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import JobsPage from "./pages/JobsPage";
-import JobDetail from "./pages/JobDetail";
+import JobDetailModal from "./pages/JobDetailModal";
 import LoginModal from "./components/LoginModal";
 import Layout from "./pages/Layout";
+import RequireAuth from "./auth/RequireAuth";
+import { useAuth } from "./auth/auth";
+import JobsFilterPage from "./pages/JobsFilterPage";
 
 const darkTheme = createTheme({
   palette: {
@@ -19,15 +22,17 @@ const darkTheme = createTheme({
 function App() {
   const location = useLocation();
   let background = location.state && location.state.background;
-  console.log(location);
-  console.log(background);
+  const auth = useAuth();
+  // console.log(auth.user);
+  // console.log(location);
+  // console.log(background);
   return (
     <ThemeProvider theme={darkTheme}>
       <Routes location={background || location}>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
-          {/* <Route path="/jobs/:page" element={<JobsPage />} />
-          <Route path="/jobs/jobDetail/:id" element={<JobDetail />} /> */}
+          <Route path="jobs/:page" element={<JobsPage />} />
+          {/* <Route path="jobs/filterJobs" element={<JobsFilterPage />} /> */}
         </Route>
         <Route
           path="*"
@@ -42,8 +47,13 @@ function App() {
         />
       </Routes>
 
-      {background && (
+      {background && auth.user ? (
         <Routes>
+          <Route path="/jobs/jobDetail/:id" element={<JobDetailModal />} />
+        </Routes>
+      ) : (
+        <Routes>
+          <Route path="/jobs/jobDetail/:id" element={<LoginModal />} />
           <Route path="/sign_in" element={<LoginModal />} />
         </Routes>
       )}

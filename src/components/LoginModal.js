@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import LoginForm from "./LoginForm";
 import { grey } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -17,15 +18,15 @@ const style = {
 };
 
 export default function LoginModal() {
-  const [open, setOpen] = React.useState(true);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const navigate = useNavigate();
 
   return (
     <div>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={true}
+        onClose={() => {
+          navigate(-1);
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

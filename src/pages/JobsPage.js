@@ -3,7 +3,7 @@ import jobs from "../jobs.json";
 import { Box, Container, Grid } from "@mui/material";
 import JobCard from "../components/JobCard";
 import BasicPagination from "../components/BasicPagination";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function JobsPage() {
   const params = useParams();

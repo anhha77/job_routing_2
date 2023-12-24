@@ -12,8 +12,8 @@ import { FTextField, FormProvider } from "./form";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { LoadingButton } from "@mui/lab";
-import HttpsIcon from "@mui/icons-material/Https";
-import zIndex from "@mui/material/styles/zIndex";
+import { useAuth } from "../auth/auth";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const defaultValues = {
@@ -39,9 +39,11 @@ function LoginForm() {
   };
 
   const [showPassword, setShowPassword] = useState(false);
+  const auth = useAuth();
 
   const onSubmit = (data) => {
     console.log(data);
+    auth.login(defaultValues.username);
   };
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -58,7 +60,7 @@ function LoginForm() {
           }}
         >
           <svg
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv"
+            className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv"
             focusable="false"
             aria-hidden="true"
             viewBox="0 0 24 24"

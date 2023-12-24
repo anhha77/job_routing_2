@@ -3,6 +3,7 @@ import jobs from "../jobs.json";
 import { Box, Container, Grid } from "@mui/material";
 import JobCard from "../components/JobCard";
 import BasicPagination from "../components/BasicPagination";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   return (

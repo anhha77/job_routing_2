@@ -5,10 +5,18 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { grey } from "@mui/material/colors";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+
+const styledBtn = {
+  backgroundColor: "#e67e22",
+  color: "#000",
+  "&:hover": {
+    backgroundColor: "#f39c12",
+  },
+};
 
 export default function JobCard({ job }) {
-  const navigate = useNavigate();
+  const location = useLocation();
   return (
     <Card
       sx={{
@@ -20,7 +28,6 @@ export default function JobCard({ job }) {
         justifyContent: "space-between",
         cursor: "pointer",
       }}
-      onClick={() => navigate(`/jobs/jobDetail/${job.id}`)}
     >
       <CardContent>
         <Typography
@@ -57,13 +64,15 @@ export default function JobCard({ job }) {
         </Typography>
       </CardContent>
       <CardActions sx={{ alignSelf: "center" }}>
-        <Button
-          size="small"
-          sx={{ bgcolor: "#e67e22", color: "#000" }}
-          onClick={() => navigate(`/jobs/jobDetail/${job.id}`)}
+        <Link
+          to={`/jobs/jobDetail/${job.id}`}
+          state={{ background: location }}
+          style={{ textDecoration: "none" }}
         >
-          Learn More
-        </Button>
+          <Button size="small" sx={styledBtn}>
+            Learn More
+          </Button>
+        </Link>
       </CardActions>
     </Card>
   );

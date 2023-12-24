@@ -9,7 +9,16 @@ import { grey } from "@mui/material/colors";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+import { useAuth } from "../auth/auth";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import BasicMenu, { SimpleDialog } from "./BasicMenu";
+import { fetchDataFilterJobs } from "../data/fetchData";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -60,6 +69,38 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function SearchAppBar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const auth = useAuth();
+
+  const handleLogout = () => {
+    auth.logout();
+    navigate("/");
+  };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // const [query, setQuery] = React.useState(searchParams.get("query"));
+  // const [inputText, setInputText] = React.useState("");
+
+  // const hanldeInput = (value) => {
+  //   setInputText(value);
+  // };
+
+  // const searchJobs = () => {
+  //   setQuery(inputText);
+  //   setSearchParams({
+  //     query: query,
+  //   });
+  //   navigate("/jobs/filterJobs");
+  // };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -88,6 +129,7 @@ export default function SearchAppBar() {
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
+
               <StyledInputBase
                 placeholder="Search..."
                 inputProps={{ "aria-label": "search" }}
@@ -101,33 +143,67 @@ export default function SearchAppBar() {
               alignItems: "center",
             }}
           >
-            <ExitToAppIcon />
-            <Button color="inherit" sx={{ marginTop: "3px" }}>
-              <Link
-                to={{ pathname: "/sign_in", state: { background: location } }}
-              >
-                Sign In
-              </Link>
-            </Button>
+            {auth.user ? (
+              <>
+                <AccountCircleIcon sx={{ marginRight: "15px" }} />
+                <Typography
+                  variant="p"
+                  sx={{ marginRight: "15px", fontSize: "1.2rem" }}
+                >
+                  {auth.user}
+                </Typography>
+                <ExitToAppIcon />
+                <Button
+                  color="inherit"
+                  sx={{ marginTop: "3px" }}
+                  onClick={handleLogout}
+                >
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <ExitToAppIcon />
+                <Button color="inherit" sx={{ marginTop: "3px" }}>
+                  <Link
+                    to={"/sign_in"}
+                    state={{ background: location }}
+                    style={{ textDecoration: "none", color: "#fff" }}
+                  >
+                    Sign In
+                  </Link>
+                </Button>
+              </>
+            )}
           </Box>
-          <Box
-            sx={{
-              display: { xs: "block", sm: "none" },
-              marginTop: "5px",
-              cursor: "pointer",
-            }}
-            onClick={() => navigate(`/`)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              fill="currentColor"
-              className="bi bi-three-dots-vertical"
-              viewBox="0 0 16 16"
+
+          <Box sx={{ display: { xs: "block", sm: "none" } }}>
+            <Box
+              sx={{
+                display: { xs: "block", sm: "none" },
+                marginTop: "5px",
+                cursor: "pointer",
+              }}
+              onClick={handleClick}
             >
-              <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
-            </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="25"
+                height="25"
+                fill="currentColor"
+                className="bi bi-three-dots-vertical"
+                viewBox="0 0 16 16"
+              >
+                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+              </svg>
+            </Box>
+            <BasicMenu
+              anchorEl={anchorEl}
+              open={open}
+              handleClose={handleClose}
+              handleLogout={handleLogout}
+              location={location}
+            />
           </Box>
         </Toolbar>
       </AppBar>
