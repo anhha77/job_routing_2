@@ -24,16 +24,17 @@ function App() {
   let background = location.state && location.state.background;
   const auth = useAuth();
   // console.log(auth.user);
-  // console.log(location);
-  // console.log(background);
+  console.log(location);
+  console.log(background);
   return (
     <ThemeProvider theme={darkTheme}>
       <Routes location={background || location}>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="jobs/:page" element={<JobsPage />} />
-          {/* <Route path="jobs/filterJobs" element={<JobsFilterPage />} /> */}
+          <Route path="jobs/filterJobs" element={<JobsFilterPage />} />
         </Route>
+
         <Route
           path="*"
           element={

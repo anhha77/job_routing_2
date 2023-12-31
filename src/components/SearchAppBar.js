@@ -85,21 +85,23 @@ export default function SearchAppBar() {
     setAnchorEl(null);
   };
 
-  // const [searchParams, setSearchParams] = useSearchParams();
-  // const [query, setQuery] = React.useState(searchParams.get("query"));
-  // const [inputText, setInputText] = React.useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [query, setQuery] = React.useState(searchParams.get("query"));
+  const [inputText, setInputText] = React.useState("");
 
-  // const hanldeInput = (value) => {
-  //   setInputText(value);
-  // };
+  const hanldeInput = (value) => {
+    console.log(value);
+    setInputText(value);
+  };
 
-  // const searchJobs = () => {
-  //   setQuery(inputText);
-  //   setSearchParams({
-  //     query: query,
-  //   });
-  //   navigate("/jobs/filterJobs");
-  // };
+  const searchJobs = () => {
+    setQuery(inputText);
+    setSearchParams({
+      query: inputText,
+    });
+    console.log(window.location.search);
+    navigate(`/jobs/filterJobs${window.location.search}`);
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -126,13 +128,17 @@ export default function SearchAppBar() {
               Job Routing
             </Typography>
             <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
+              <Button onClick={searchJobs}>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+              </Button>
 
               <StyledInputBase
                 placeholder="Search..."
                 inputProps={{ "aria-label": "search" }}
+                value={inputText}
+                onChange={(event) => hanldeInput(event.target.value)}
               />
             </Search>
           </Box>

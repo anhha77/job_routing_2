@@ -21,7 +21,7 @@ async function fetchDataFilterJobs(queryString) {
   if (queryString) {
     const result = jobs.filter(
       (job) =>
-        job.tilte.includes(queryString) ||
+        job.title.includes(queryString) ||
         job.city.includes(queryString) ||
         job.description.includes(queryString) ||
         job.skills.some((skill) => skill.includes(queryString))
