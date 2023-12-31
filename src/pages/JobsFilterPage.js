@@ -13,7 +13,6 @@ import BasicPagination from "../components/BasicPagination";
 import { fetchDataFilterJobs } from "../data/fetchData";
 
 const style = {
-  width: "100vw",
   height: "100vh",
   bgcolor: "#000",
   p: 4,
